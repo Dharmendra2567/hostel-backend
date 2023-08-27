@@ -9,6 +9,7 @@ const port= process.env.PORT
 const TestRoute = require('./router/testRoute')
 const UserRoute = require('./router/UserRoute')
 //middleware
+const cors = require('cors');
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json())
 app.use(morgan('dev'))
 
 //use routes
+app.use(cors())
 app.use(TestRoute)
 app.use('/api',UserRoute)
 

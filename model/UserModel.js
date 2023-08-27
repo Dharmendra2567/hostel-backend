@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
     },
     role:{
         type:Number,
-        default:0
+        default:1
     },
     isVerified:{
         type:Boolean,
@@ -63,7 +63,6 @@ UserSchema.methods = {
         return this.hashed_password === this.encryptPassword(password)
     }
 }
-
 
 module.exports= mongoose.model('User',UserSchema)
 

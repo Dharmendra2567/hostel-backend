@@ -36,7 +36,7 @@ exports.addUser = async (req, res) => {
         to: req.body.email,
         subject: "Email Verification",
         text: "click here to verify your accour" + url,
-        html: `<a href='${url}'><button>verify</button></a.`
+        html: `<a href='${url}'><button>verify</button></a>`
     })
     //add user
     userToAdd = await userToAdd.save()
@@ -168,12 +168,12 @@ exports.SignIn = async (req, res) => {
         return res.status(400).json({ error: "user not verifies yet" })
     }
     //create login token
-    let token = jwt.sign({ user: user._id, role: user.role,firstname:user.firstname }, process.env.JWT_SECRET)
+    let token = jwt.sign({ user: user._id, role: user.role,firstname:user.firstname,lastname:user.lastname,address:user.address }, process.env.JWT_SECRET)
     //set cookies
     res.cookie('myCookie', token, { expire: Date.now() + 86400 })
     //provide information to user
-    const { _id, firstname, role } = user
-    return res.status(200).json({ token, user: { _id,firstname, role, email } })
+    const { _id, firstname, role,address,lastname} = user
+    return res.status(200).json({ token, user: { _id,firstname, role, email,address,lastname } })
 }
     catch (err) {
         // Handle any other errors that might occur during the sign-in process
@@ -188,4 +188,13 @@ exports.signOut = async (req, res) => {
         return res.status(400).json({ error: "something went wrong" })
     }
     return res.status(200).json({ error: "logout successfully" })
+}
+
+//get all users
+exports.getAllUsers = async (req,res)=>{
+    let users = await User.find()
+    if(!users){
+        return res.status(400).json({error:"something went wrong"})
+    }
+    return res.send(users)
 }
